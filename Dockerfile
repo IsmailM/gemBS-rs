@@ -10,5 +10,8 @@ RUN mkdir /usr/local/build; cd /usr/local/build
 RUN git clone --recursive https://github.com/heathsc/gemBS-rs.git
 RUN (cd gemBS-rs; PATH=$PATH:/root/.cargo/bin GEMBS_CONTAINER=1 make install)
 RUN rm -rf /usr/local/build
-RUN echo "cd /home;export PATH=/usr/local/lib/gemBS/bin:/usr/local/lib/gemBS/texlive/bin/x86_64-linux:$PATH;gemBS \$@" > start.sh
-ENTRYPOINT ["/bin/bash", "start.sh"]
+
+WORKDIR /home
+ENV PATH /usr/local/lib/gemBS/bin:/usr/local/lib/gemBS/texlive/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+ENTRYPOINT ["gemBS"]
